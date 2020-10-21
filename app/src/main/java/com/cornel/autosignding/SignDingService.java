@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.os.IBinder;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +26,10 @@ public class SignDingService extends Service {
 
     private Timer timer;
     private TimerTask task;
-
+    /**
+     * 分别对应1为星期天，2为星期一 ..... 星期六
+     */
+    private int[] signDateArr = {2,3,4,5,6,7};
     /**
      * 早晨打卡时间
      */
@@ -72,7 +76,7 @@ public class SignDingService extends Service {
                 int mHour = c.get(Calendar.HOUR_OF_DAY);//时
                 int minute = c.get(Calendar.MINUTE);
 
-                if(mWay>1 && mWay <=7){
+                if(isCheckWeek(mWay)){
                     /**
                      * 八点四十之后九点前  开始打卡
                      */
@@ -127,5 +131,15 @@ public class SignDingService extends Service {
      */
     private int getRandomNumber(){
         return (int)(Math.random()*(10)+1);
+    }
+
+
+    private boolean isCheckWeek(int week){
+        for(int item:signDateArr){
+            if(week == item){
+                return true;
+            }
+        }
+        return false;
     }
 }
